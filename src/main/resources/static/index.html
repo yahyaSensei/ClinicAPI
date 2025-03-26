@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinic API Frontend</title>
+    <script>
+        async function fetchPatients() {
+            const response = await fetch('http://localhost:8080/patients');
+            const data = await response.json();
+            document.getElementById('patients').innerText = JSON.stringify(data, null, 2);
+        }
+
+        async function addDoctor() {
+            const id = document.getElementById('doctorId').value;
+            const name = document.getElementById('doctorName').value;
+            const specialization = document.getElementById('doctorSpecialization').value;
+            const workHours = document.getElementById('doctorWorkHours').value;
+            const numberOfPatients = document.getElementById('doctorNumberOfPatients').value;
+
+            await fetch('http://localhost:8080/doctors', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `id=${id}&name=${name}&specialization=${specialization}&workHours=${workHours}&numberOfPatients=${numberOfPatients}`
+            });
+        }
+
+        async function addPatient() {
+            const id = document.getElementById('patientId').value;
+            const name = document.getElementById('patientName').value;
+            const fees = document.getElementById('patientFees').value;
+
+            await fetch('http://localhost:8080/patients', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `id=${id}&name=${name}&fees=${fees}`
+            });
+        }
+
+        async function addWorker() {
+            const id = document.getElementById('workerId').value;
+            const name = document.getElementById('workerName').value;
+            const salary = document.getElementById('workerSalary').value;
+            const position = document.getElementById('workerPosition').value;
+
+            await fetch('http://localhost:8080/workers', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `id=${id}&name=${name}&salary=${salary}&position=${position}`
+            });
+        }
+
+        async function addNurse() {
+            const id = document.getElementById('nurseId').value;
+            const name = document.getElementById('nurseName').value;
+            const doctorId = document.getElementById('nurseDoctorId').value;
+            const salary = document.getElementById('nurseSalary').value;
+
+            await fetch('http://localhost:8080/nurses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `id=${id}&name=${name}&doctorId=${doctorId}&salary=${salary}`
+            });
+        }
+
+        async function addAppointment() {
+            const id = document.getElementById('appointmentId').value;
+            const doctorId = document.getElementById('appointmentDoctorId').value;
+            const patientId = document.getElementById('appointmentPatientId').value;
+
+            await fetch('http://localhost:8080/appointments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `id=${id}&doctorId=${doctorId}&patientId=${patientId}`
+            });
+        }
+
+        async function fetchAppointments() {
+            const response = await fetch('http://localhost:8080/allappointment');
+            const data = await response.json();
+            document.getElementById('appointments').innerText = JSON.stringify(data, null, 2);
+        }
+    </script>
+</head>
+<body>
+<h1>Clinic API Frontend</h1>
+
+<h2>View All Patients</h2>
+<button onclick="fetchPatients()">Get All Patients</button>
+<pre id="patients"></pre>
+
+<h2>Add Doctor</h2>
+<input type="text" id="doctorId" placeholder="ID">
+<input type="text" id="doctorName" placeholder="Name">
+<input type="text" id="doctorSpecialization" placeholder="Specialization">
+<input type="text" id="doctorWorkHours" placeholder="Work Hours">
+<input type="text" id="doctorNumberOfPatients" placeholder="Number of Patients">
+<button onclick="addDoctor()">Add Doctor</button>
+
+<h2>Add Patient</h2>
+<input type="text" id="patientId" placeholder="ID">
+<input type="text" id="patientName" placeholder="Name">
+<input type="text" id="patientFees" placeholder="Fees">
+<button onclick="addPatient()">Add Patient</button>
+
+<h2>Add Worker</h2>
+<input type="text" id="workerId" placeholder="ID">
+<input type="text" id="workerName" placeholder="Name">
+<input type="text" id="workerSalary" placeholder="Salary">
+<input type="text" id="workerPosition" placeholder="Position">
+<button onclick="addWorker()">Add Worker</button>
+
+<h2>Add Nurse</h2>
+<input type="text" id="nurseId" placeholder="ID">
+<input type="text" id="nurseName" placeholder="Name">
+<input type="text" id="nurseDoctorId" placeholder="Doctor ID">
+<input type="text" id="nurseSalary" placeholder="Salary">
+<button onclick="addNurse()">Add Nurse</button>
+
+<h2>Add Appointment</h2>
+<input type="text" id="appointmentId" placeholder="ID">
+<input type="text" id="appointmentDoctorId" placeholder="Doctor ID">
+<input type="text" id="appointmentPatientId" placeholder="Patient ID">
+<button onclick="addAppointment()">Add Appointment</button>
+
+<h2>View All Appointments</h2>
+<button onclick="fetchAppointments()">Get All Appointments</button>
+<pre id="appointments"></pre>
+</body>
+</html>
