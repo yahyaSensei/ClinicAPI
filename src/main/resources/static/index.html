@@ -75,13 +75,14 @@
             const id = document.getElementById('appointmentId').value;
             const doctorId = document.getElementById('appointmentDoctorId').value;
             const patientId = document.getElementById('appointmentPatientId').value;
+            const date = document.getElementById('appointmentDate').value;
 
             await fetch('http://localhost:8080/appointments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                body: `id=${id}&doctorId=${doctorId}&patientId=${patientId}`
+                body: `id=${id}&doctorId=${doctorId}&patientId=${patientId}&date=${date}`
             });
         }
 
@@ -89,6 +90,62 @@
             const response = await fetch('http://localhost:8080/allappointment');
             const data = await response.json();
             document.getElementById('appointments').innerText = JSON.stringify(data, null, 2);
+        }
+        async function fetchPatientsWithFeesAbove() {
+            const minFees = document.getElementById('minFees').value;
+            const response = await fetch(`http://localhost:8080/patients/fees-above?minFees=${minFees}`);
+            const data = await response.json();
+            document.getElementById('patientsWithFeesAbove').innerText = JSON.stringify(data, null, 2);
+        }
+
+        async function fetchDoctorCountBySpecialization() {
+            const minCount = document.getElementById('minSpecializationCount').value;
+            const response = await fetch(`http://localhost:8080/doctors/specialization-count?minCount=${minCount}`);
+            const data = await response.json();
+            document.getElementById('doctorSpecializationCount').innerText = JSON.stringify(data, null, 2);
+        }
+
+        async function fetchAppointmentsWithPatientAndDoctor() {
+            const response = await fetch('http://localhost:8080/appointments/patient-doctor');
+            const data = await response.json();
+            document.getElementById('appointmentsWithPatientAndDoctor').innerText = JSON.stringify(data, null, 2);
+        }
+
+        async function fetchDoctorsWithNurses() {
+            const response = await fetch('http://localhost:8080/doctors/nurses');
+            const data = await response.json();
+            document.getElementById('doctorsWithNurses').innerText = JSON.stringify(data, null, 2);
+        }
+
+        async function fetchPatientsByDoctor() {
+            const doctorId = document.getElementById('doctorIdForPatients').value;
+            const response = await fetch(`http://localhost:8080/patients/by-doctor?doctorId=${doctorId}`);
+            const data = await response.json();
+            document.getElementById('patientsByDoctor').innerText = JSON.stringify(data, null, 2);
+        }
+
+        async function fetchTotalAppointments() {
+            const response = await fetch('http://localhost:8080/appointments/total');
+            const data = await response.text();
+            document.getElementById('totalAppointments').innerText = data;
+        }
+
+        async function fetchTotalFeesByDoctor() {
+            const response = await fetch('http://localhost:8080/doctors/total-fees');
+            const data = await response.json();
+            document.getElementById('totalFeesByDoctor').innerText = JSON.stringify(data, null, 2);
+        }
+
+        async function fetchAverageWorkerSalary() {
+            const response = await fetch('http://localhost:8080/workers/average-salary');
+            const data = await response.text();
+            document.getElementById('averageWorkerSalary').innerText = data;
+        }
+
+        async function fetchDoctorsWithAppointmentCount() {
+            const response = await fetch('http://localhost:8080/doctors/appointment-count');
+            const data = await response.json();
+            document.getElementById('doctorsWithAppointmentCount').innerText = JSON.stringify(data, null, 2);
         }
     </script>
 </head>
@@ -100,7 +157,7 @@
 <pre id="patients"></pre>
 
 <h2>Add Doctor</h2>
-<input type="text" id="doctorId" placeholder="ID">
+<input type="text" id="doctorIdForPatients" placeholder="ID">
 <input type="text" id="doctorName" placeholder="Name">
 <input type="text" id="doctorSpecialization" placeholder="Specialization">
 <input type="text" id="doctorWorkHours" placeholder="Work Hours">
@@ -131,10 +188,50 @@
 <input type="text" id="appointmentId" placeholder="ID">
 <input type="text" id="appointmentDoctorId" placeholder="Doctor ID">
 <input type="text" id="appointmentPatientId" placeholder="Patient ID">
+<input type="text" id="appointmentDate" placeholder="Date">
 <button onclick="addAppointment()">Add Appointment</button>
 
 <h2>View All Appointments</h2>
 <button onclick="fetchAppointments()">Get All Appointments</button>
 <pre id="appointments"></pre>
+
+<h2>Get Patients with Fees Above</h2>
+<input type="number" id="minFees" placeholder="Minimum Fees">
+<button onclick="fetchPatientsWithFeesAbove()">Get Patients</button>
+<pre id="patientsWithFeesAbove"></pre>
+
+<h2>Get Doctor Count by Specialization</h2>
+<input type="number" id="minSpecializationCount" placeholder="Minimum Count">
+<button onclick="fetchDoctorCountBySpecialization()">Get Doctor Count</button>
+<pre id="doctorSpecializationCount"></pre>
+
+<h2>Get Appointments with Patient and Doctor</h2>
+<button onclick="fetchAppointmentsWithPatientAndDoctor()">Get Appointments</button>
+<pre id="appointmentsWithPatientAndDoctor"></pre>
+
+<h2>Get Doctors with Nurses</h2>
+<button onclick="fetchDoctorsWithNurses()">Get Doctors</button>
+<pre id="doctorsWithNurses"></pre>
+
+<h2>Get Patients by Doctor</h2>
+<input type="number" id="doctorId" placeholder="Doctor ID">
+<button onclick="fetchPatientsByDoctor()">Get Patients</button>
+<pre id="patientsByDoctor"></pre>
+
+<h2>Get Total Appointments</h2>
+<button onclick="fetchTotalAppointments()">Get Total</button>
+<pre id="totalAppointments"></pre>
+
+<h2>Get Total Fees by Doctor</h2>
+<button onclick="fetchTotalFeesByDoctor()">Get Fees</button>
+<pre id="totalFeesByDoctor"></pre>
+
+<h2>Get Average Worker Salary</h2>
+<button onclick="fetchAverageWorkerSalary()">Get Average Salary</button>
+<pre id="averageWorkerSalary"></pre>
+
+<h2>Get Doctors with Appointment Count</h2>
+<button onclick="fetchDoctorsWithAppointmentCount()">Get Doctors</button>
+<pre id="doctorsWithAppointmentCount"></pre>
 </body>
 </html>

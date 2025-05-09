@@ -91,12 +91,13 @@ public class databaseHandler {
         }
     }
 
-    public void AddAppointment(int id, int doctorId, int patientId) throws SQLException {
-        String query = "CALL AddAppointment(?, ?, ?)";
+    public void AddAppointment(int id, int doctorId, int patientId,String date_and_time) throws SQLException {
+        String query = "CALL AddAppointment(?, ?, ?,?)";
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, id);
             stmt.setInt(2, doctorId);
             stmt.setInt(3, patientId);
+            stmt.setString(4, date_and_time);
             stmt.execute();
         }
     }
@@ -117,5 +118,100 @@ public class databaseHandler {
         }
         appointmentsJson.append("]");
         return appointmentsJson.toString();
+    }
+    public String getPatientsWithFeesAbove(double minFees) throws SQLException {
+        String query = "SELECT * FROM get_patients_with_fees_above(?)";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setDouble(1, minFees);
+            return executeQueryToJson(stmt);
+        }
+    }
+
+    public String getDoctorCountBySpecialization(int minCount) throws SQLException {
+        String query = "SELECT * FROM get_doctor_count_by_specialization(?)";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, minCount);
+            return executeQueryToJson(stmt);
+        }
+    }
+
+    public String getAppointmentsWithPatientAndDoctor() throws SQLException {
+        String query = "SELECT * FROM get_appointments_with_patient_and_doctor()";
+        try (Statement stmt = conn.createStatement()) {
+            return executeQueryToJson(stmt.executeQuery(query));
+        }
+    }
+
+    public String getDoctorsWithNurses() throws SQLException {
+        String query = "SELECT * FROM get_doctors_with_nurses()";
+        try (Statement stmt = conn.createStatement()) {
+            return executeQueryToJson(stmt.executeQuery(query));
+        }
+    }
+
+    public String getPatientsByDoctor(int doctorId) throws SQLException {
+        String query = "SELECT * FROM get_patients_by_doctor(?)";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, doctorId);
+            return executeQueryToJson(stmt);
+        }
+    }
+
+    public int getTotalAppointments() throws SQLException {
+        String query = "SELECT get_total_appointments()";
+        try (Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery(query);
+            return rs.next() ? rs.getInt(1) : 0;
+        }
+    }
+
+    public String getTotalFeesByDoctor() throws SQLException {
+        String query = "SELECT * FROM get_total_fees_by_doctor()";
+        try (Statement stmt = conn.createStatement()) {
+            return executeQueryToJson(stmt.executeQuery(query));
+        }
+    }
+
+    public double getAverageWorkerSalary() throws SQLException {
+        String query = "SELECT get_average_worker_salary()";
+        try (Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery(query);
+            return rs.next() ? rs.getDouble(1) : 0.0;
+        }
+    }
+
+    public String getDoctorsWithAppointmentCount() throws SQLException {
+        String query = "SELECT * FROM get_doctors_with_appointment_count()";
+        try (Statement stmt = conn.createStatement()) {
+            return executeQueryToJson(stmt.executeQuery(query));
+        }
+    }
+
+    private String executeQueryToJson(PreparedStatement stmt) throws SQLException {
+        ResultSet rs = stmt.executeQuery();
+        return executeQueryToJson(rs);
+    }
+
+    private String executeQueryToJson(ResultSet rs) throws SQLException {
+        StringBuilder resultJson = new StringBuilder("[");
+        ResultSetMetaData metaData = rs.getMetaData();
+        int columnCount = metaData.getColumnCount();
+        while (rs.next()) {
+            resultJson.append("{");
+            for (int i = 1; i <= columnCount; i++) {
+                resultJson.append("\"").append(metaData.getColumnName(i)).append("\":");
+                String value = rs.getString(i);
+                if (value != null) {
+                    resultJson.append("\"").append(value.replace("\"", "\\\"")).append("\"");
+                } else {
+                    resultJson.append("null");
+                }
+                if (i < columnCount) resultJson.append(",");
+            }
+            resultJson.append("},");
+        }
+        if (resultJson.length() > 1) resultJson.setLength(resultJson.length() - 1); // Remove trailing comma
+        resultJson.append("]");
+        return resultJson.toString();
     }
 }

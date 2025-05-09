@@ -43,12 +43,56 @@ public class RESTcontroller {
     }
 
     @PostMapping("/appointments")
-    public void addAppointment(@RequestParam int id, @RequestParam int doctorId, @RequestParam int patientId) throws SQLException {
-        dbHandler.AddAppointment(id, doctorId, patientId);
+    public void addAppointment(@RequestParam int id, @RequestParam int doctorId, @RequestParam int patientId ,@RequestParam String date) throws SQLException {
+        dbHandler.AddAppointment(id, doctorId, patientId, date);
     }
 
     @GetMapping("/allappointment")
     public String getAppointments() throws SQLException {
         return dbHandler.getAppointmens();
+    }
+    @GetMapping("/patients/fees-above")
+    public String getPatientsWithFeesAbove(@RequestParam double minFees) throws SQLException {
+        return dbHandler.getPatientsWithFeesAbove(minFees);
+    }
+
+    @GetMapping("/doctors/specialization-count")
+    public String getDoctorCountBySpecialization(@RequestParam int minCount) throws SQLException {
+        return dbHandler.getDoctorCountBySpecialization(minCount);
+    }
+
+    @GetMapping("/appointments/patient-doctor")
+    public String getAppointmentsWithPatientAndDoctor() throws SQLException {
+        return dbHandler.getAppointmentsWithPatientAndDoctor();
+    }
+
+    @GetMapping("/doctors/nurses")
+    public String getDoctorsWithNurses() throws SQLException {
+        return dbHandler.getDoctorsWithNurses();
+    }
+
+    @GetMapping("/patients/by-doctor")
+    public String getPatientsByDoctor(@RequestParam int doctorId) throws SQLException {
+        return dbHandler.getPatientsByDoctor(doctorId);
+    }
+
+    @GetMapping("/appointments/total")
+    public int getTotalAppointments() throws SQLException {
+        return dbHandler.getTotalAppointments();
+    }
+
+    @GetMapping("/doctors/total-fees")
+    public String getTotalFeesByDoctor() throws SQLException {
+        return dbHandler.getTotalFeesByDoctor();
+    }
+
+    @GetMapping("/workers/average-salary")
+    public double getAverageWorkerSalary() throws SQLException {
+        return dbHandler.getAverageWorkerSalary();
+    }
+
+    @GetMapping("/doctors/appointment-count")
+    public String getDoctorsWithAppointmentCount() throws SQLException {
+        return dbHandler.getDoctorsWithAppointmentCount();
     }
 }
