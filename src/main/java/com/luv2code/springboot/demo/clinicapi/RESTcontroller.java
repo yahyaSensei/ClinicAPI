@@ -95,4 +95,13 @@ public class RESTcontroller {
     public String getDoctorsWithAppointmentCount() throws SQLException {
         return dbHandler.getDoctorsWithAppointmentCount();
     }
+    @PostMapping("/patients/delete")
+    public void deletePatient(@RequestParam int id) throws SQLException {
+        dbHandler.DeletePatient(id);
+    }
+
+    @PostMapping("/patients/update")
+    public void updatePatient(@RequestParam int id, @RequestParam String name, @RequestParam int fees) throws SQLException {
+        dbHandler.UpdatePatient(id, name, fees);
+    }
 }

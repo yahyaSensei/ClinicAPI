@@ -1,237 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clinic API Frontend</title>
-    <script>
-        async function fetchPatients() {
-            const response = await fetch('http://localhost:8080/patients');
-            const data = await response.json();
-            document.getElementById('patients').innerText = JSON.stringify(data, null, 2);
-        }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clinic</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav>
+      <a class="logo" href="">
+        <img src="imgs/Logo.jpg" alt="" />
+      </a>
 
-        async function addDoctor() {
-            const id = document.getElementById('doctorId').value;
-            const name = document.getElementById('doctorName').value;
-            const specialization = document.getElementById('doctorSpecialization').value;
-            const workHours = document.getElementById('doctorWorkHours').value;
-            const numberOfPatients = document.getElementById('doctorNumberOfPatients').value;
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="patients.html">Patients</a></li>
+        <li><a href="doctors.html">Doctors</a></li>
+      </ul>
 
-            await fetch('http://localhost:8080/doctors', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `id=${id}&name=${name}&specialization=${specialization}&workHours=${workHours}&numberOfPatients=${numberOfPatients}`
-            });
-        }
+      <div class="phone-number">
+        <img src="imgs/call.png" alt="" />
+        <p>+20 1116 315 813</p>
+      </div>
+    </nav>
 
-        async function addPatient() {
-            const id = document.getElementById('patientId').value;
-            const name = document.getElementById('patientName').value;
-            const fees = document.getElementById('patientFees').value;
+    <main>
+      <section class="banner-section">
+        <div class="banner-text">
+          <h1 class="highlighted-text-shadow">
+            Your Health <br />Our <br />
+            <span>Priority</span>
+          </h1>
+          <p>We are here for you</p>
+          <button class="main-btn">
+            <a href="#bookYourAppointment">Book Your Appointment</a>
+          </button>
+        </div>
+      </section>
 
-            await fetch('http://localhost:8080/patients', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `id=${id}&name=${name}&fees=${fees}`
-            });
-        }
+      <section class="service-section" id="bookYourAppointment">
+        <h1 class="main-head-title">Welcome to Our Clinic</h1>
 
-        async function addWorker() {
-            const id = document.getElementById('workerId').value;
-            const name = document.getElementById('workerName').value;
-            const salary = document.getElementById('workerSalary').value;
-            const position = document.getElementById('workerPosition').value;
+        <div class="service-container">
+          <div class="list">
 
-            await fetch('http://localhost:8080/workers', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `id=${id}&name=${name}&salary=${salary}&position=${position}`
-            });
-        }
+            <div class="service">
+              <img src="imgs/ambulance.png" alt="">
+              <h3>Emergency Services</h3>
+              <p>
+                Diagnosis and treatment of heart & cardiovascular conditions.
+              </p>
+            </div>
+            <div class="service">
+              <img src="imgs/group.png" alt="">
+              <h3>Qualified Doctors</h3>
+              <p>
+                Diagnosis and treatment of heart & cardiovascular conditions.
+              </p>
+            </div>
+            <div class="service">
+              <img src="imgs/call.png" alt="">
+              <h3>24/7 Support</h3>
+              <p>
+                Diagnosis and treatment of heart & cardiovascular conditions.
+              </p>
+            </div>
+            <div class="service">
+              <img src="imgs/calendar.png" alt="">
+              <h3>Online Appointment</h3>
+              <p>
+                Diagnosis and treatment of heart & cardiovascular conditions.
+              </p>
+            </div>
 
-        async function addNurse() {
-            const id = document.getElementById('nurseId').value;
-            const name = document.getElementById('nurseName').value;
-            const doctorId = document.getElementById('nurseDoctorId').value;
-            const salary = document.getElementById('nurseSalary').value;
+          </div>
+          <div class="appointment-form">
+            <h3>Make Appointment</h3>
+              <input type="text" id="appointmentId" placeholder="ID" />
+              <input type="text" id="appointmentDoctorId" placeholder="Doctor ID" />
+              <input type="text" id="appointmentPatientId" placeholder="Patient ID" />
+              <input type="text" id="appointmentDate" placeholder="Date" />
+              <button class="main-btn" onclick="addAppointment()">Add Appointment</button>
+          </div>
+        </div>
+      </section>
 
-            await fetch('http://localhost:8080/nurses', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `id=${id}&name=${name}&doctorId=${doctorId}&salary=${salary}`
-            });
-        }
+      <section class="service-section">
+        <h1 class="main-head-title">Dashboard</h1>
 
-        async function addAppointment() {
-            const id = document.getElementById('appointmentId').value;
-            const doctorId = document.getElementById('appointmentDoctorId').value;
-            const patientId = document.getElementById('appointmentPatientId').value;
-            const date = document.getElementById('appointmentDate').value;
+        <div class="service-container">
+          <div class="appointment-form">
+            <h3>Add Doctor</h3>
+            <input type="text" id="doctorIdForPatients" placeholder="ID" />
+            <input type="text" id="doctorName" placeholder="Name" />
+            <input type="text" id="doctorSpecialization" placeholder="Specialization" />
+            <input type="text" id="doctorWorkHours" placeholder="Work Hours" />
+            <input type="text" id="doctorNumberOfPatients" placeholder="Number of Patients"/>
+            <button class="main-btn" onclick="addDoctor()">Add Doctor</button>
+          </div>
+        </div>
 
-            await fetch('http://localhost:8080/appointments', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `id=${id}&doctorId=${doctorId}&patientId=${patientId}&date=${date}`
-            });
-        }
+        <br><br><br>
+        <div class="service-container">
+          <div class="appointment-form">
+            <h3>Add Patient</h3>
+            <input type="text" id="patientId" placeholder="ID" />
+            <input type="text" id="patientName" placeholder="Name" />
+            <input type="text" id="patientFees" placeholder="Fees" />
+            <button class="main-btn" onclick="addPatient()">Add Patient</button>
+          </div>
+        </div>
 
-        async function fetchAppointments() {
-            const response = await fetch('http://localhost:8080/allappointment');
-            const data = await response.json();
-            document.getElementById('appointments').innerText = JSON.stringify(data, null, 2);
-        }
-        async function fetchPatientsWithFeesAbove() {
-            const minFees = document.getElementById('minFees').value;
-            const response = await fetch(`http://localhost:8080/patients/fees-above?minFees=${minFees}`);
-            const data = await response.json();
-            document.getElementById('patientsWithFeesAbove').innerText = JSON.stringify(data, null, 2);
-        }
+        <br><br><br>
+        <div class="service-container">
+          <div class="appointment-form">
+          <h3>Add Worker</h3>
+          <input type="text" id="workerId" placeholder="ID" />
+          <input type="text" id="workerName" placeholder="Name" />
+          <input type="text" id="workerSalary" placeholder="Salary" />
+          <input type="text" id="workerPosition" placeholder="Position" />
+          <button class="main-btn" onclick="addWorker()">Add Worker</button>
+          </div>
+        </div>
 
-        async function fetchDoctorCountBySpecialization() {
-            const minCount = document.getElementById('minSpecializationCount').value;
-            const response = await fetch(`http://localhost:8080/doctors/specialization-count?minCount=${minCount}`);
-            const data = await response.json();
-            document.getElementById('doctorSpecializationCount').innerText = JSON.stringify(data, null, 2);
-        }
+        <br><br><br>
+        <div class="service-container">
+          <div class="appointment-form">
+          <h3>Add Nurse</h3>
+          <input type="text" id="nurseId" placeholder="ID" />
+          <input type="text" id="nurseName" placeholder="Name" />
+          <input type="text" id="nurseDoctorId" placeholder="Doctor ID" />
+          <input type="text" id="nurseSalary" placeholder="Salary" />
+          <button class="main-btn" onclick="addNurse()">Add Nurse</button>
+          </div>
+        </div>
 
-        async function fetchAppointmentsWithPatientAndDoctor() {
-            const response = await fetch('http://localhost:8080/appointments/patient-doctor');
-            const data = await response.json();
-            document.getElementById('appointmentsWithPatientAndDoctor').innerText = JSON.stringify(data, null, 2);
-        }
+        <br><br><br>
+        <div class="service-container">
+          <div class="appointment-form">
+          <h3>View All Patients</h3>
+          <button class="main-btn" onclick="fetchPatients()">Get All Patients</button>
+          <pre id="patients"></pre>
+          </div>
+        </div>
 
-        async function fetchDoctorsWithNurses() {
-            const response = await fetch('http://localhost:8080/doctors/nurses');
-            const data = await response.json();
-            document.getElementById('doctorsWithNurses').innerText = JSON.stringify(data, null, 2);
-        }
+        <br><br><br>
+        <div class="service-container">
+          <div class="appointment-form">
+          <h3>View All Appointments</h3>
+          <button class="main-btn" onclick="fetchAppointments()">Get All Appointments</button>
+          <pre id="appointments"></pre>
+          </div>
+        </div>
 
-        async function fetchPatientsByDoctor() {
-            const doctorId = document.getElementById('doctorIdForPatients').value;
-            const response = await fetch(`http://localhost:8080/patients/by-doctor?doctorId=${doctorId}`);
-            const data = await response.json();
-            document.getElementById('patientsByDoctor').innerText = JSON.stringify(data, null, 2);
-        }
+        <br><br><br>
+        <div class="service-container">
+          <div class="appointment-form">
+          <h3>Get Patients with Fees Above</h3>
+          <input type="number" id="minFees" placeholder="Minimum Fees" />
+          <button onclick="fetchPatientsWithFeesAbove()">Get Patients</button>
+          <pre id="patientsWithFeesAbove"></pre>
+          </div>
+        </div>
 
-        async function fetchTotalAppointments() {
-            const response = await fetch('http://localhost:8080/appointments/total');
-            const data = await response.text();
-            document.getElementById('totalAppointments').innerText = data;
-        }
+        <br><br><br>
+        <div class="service-container">
+          <div class="appointment-form">
+          <h3>Get Doctor Count by Specialization</h3>
+          <input
+            type="number"
+            id="minSpecializationCount"
+            placeholder="Minimum Count"
+          />
+          <button onclick="fetchDoctorCountBySpecialization()">
+            Get Doctor Count
+          </button>
+          <pre id="doctorSpecializationCount"></pre>
+          </div>
+        </div>
 
-        async function fetchTotalFeesByDoctor() {
-            const response = await fetch('http://localhost:8080/doctors/total-fees');
-            const data = await response.json();
-            document.getElementById('totalFeesByDoctor').innerText = JSON.stringify(data, null, 2);
-        }
+        <br><br><br>
+        <div class="service-container">
+          <div class="appointment-form">
+          <h3>Get Appointments with Patient and Doctor</h3>
+          <button onclick="fetchAppointmentsWithPatientAndDoctor()">
+            Get Appointments
+          </button>
+          <pre id="appointmentsWithPatientAndDoctor"></pre>
+          </div>
+        </div>
 
-        async function fetchAverageWorkerSalary() {
-            const response = await fetch('http://localhost:8080/workers/average-salary');
-            const data = await response.text();
-            document.getElementById('averageWorkerSalary').innerText = data;
-        }
+        <br><br><br>
+        <div class="service-container">
+          <div class="appointment-form">
+          <h3>Get Doctors with Nurses</h3>
+          <button onclick="fetchDoctorsWithNurses()">Get Doctors</button>
+          <pre id="doctorsWithNurses"></pre>
+          </div>
+        </div>
 
-        async function fetchDoctorsWithAppointmentCount() {
-            const response = await fetch('http://localhost:8080/doctors/appointment-count');
-            const data = await response.json();
-            document.getElementById('doctorsWithAppointmentCount').innerText = JSON.stringify(data, null, 2);
-        }
-    </script>
-</head>
-<body>
-<h1>Clinic API Frontend</h1>
+        <br><br><br>
+        <div class="service-container">
+          <div class="appointment-form">
+          <h3>Get Patients by Doctor</h3>
+          <input type="number" id="doctorId" placeholder="Doctor ID" />
+          <button onclick="fetchPatientsByDoctor()">Get Patients</button>
+          <pre id="patientsByDoctor"></pre>
+          </div>
+        </div>
 
-<h2>View All Patients</h2>
-<button onclick="fetchPatients()">Get All Patients</button>
-<pre id="patients"></pre>
+        <br><br><br>
+        <div class="service-container">
+          <div class="appointment-form">
+          <h3>Get Total Appointments</h3>
+          <button onclick="fetchTotalAppointments()">Get Total</button>
+          <pre id="totalAppointments"></pre>
+          </div>
+        </div>
 
-<h2>Add Doctor</h2>
-<input type="text" id="doctorIdForPatients" placeholder="ID">
-<input type="text" id="doctorName" placeholder="Name">
-<input type="text" id="doctorSpecialization" placeholder="Specialization">
-<input type="text" id="doctorWorkHours" placeholder="Work Hours">
-<input type="text" id="doctorNumberOfPatients" placeholder="Number of Patients">
-<button onclick="addDoctor()">Add Doctor</button>
+        <br><br><br>
+        <div class="service-container">
+          <div class="appointment-form">
+          <h3>Get Total Fees by Doctor</h3>
+          <button onclick="fetchTotalFeesByDoctor()">Get Fees</button>
+          <pre id="totalFeesByDoctor"></pre>
+          </div>
+        </div>
 
-<h2>Add Patient</h2>
-<input type="text" id="patientId" placeholder="ID">
-<input type="text" id="patientName" placeholder="Name">
-<input type="text" id="patientFees" placeholder="Fees">
-<button onclick="addPatient()">Add Patient</button>
+        <br><br><br>
+        <div class="service-container">
+          <div class="appointment-form">
+          <h3>Get Average Worker Salary</h3>
+          <button onclick="fetchAverageWorkerSalary()">Get Average Salary</button>
+          <pre id="averageWorkerSalary"></pre>
+          </div>
+        </div>
 
-<h2>Add Worker</h2>
-<input type="text" id="workerId" placeholder="ID">
-<input type="text" id="workerName" placeholder="Name">
-<input type="text" id="workerSalary" placeholder="Salary">
-<input type="text" id="workerPosition" placeholder="Position">
-<button onclick="addWorker()">Add Worker</button>
+        <br><br><br>
+        <div class="service-container">
+          <div class="appointment-form">
+          <h3>Get Doctors with Appointment Count</h3>
+          <button onclick="fetchDoctorsWithAppointmentCount()">Get Doctors</button>
+          <pre id="doctorsWithAppointmentCount"></pre>
+          </div>
+        </div>
+        <br><br><br>
+        <div class="service-container">
+          <div class="appointment-form">
+            <h3>Update Patient</h3>
+            <input type="text" id="updatePatientId" placeholder="Patient ID" />
+            <input type="text" id="updatePatientName" placeholder="New Name" />
+            <input type="text" id="updatePatientFees" placeholder="New Fees" />
+            <button class="main-btn" onclick="updatePatient()">Update Patient</button>
+          </div>
+        </div>
 
-<h2>Add Nurse</h2>
-<input type="text" id="nurseId" placeholder="ID">
-<input type="text" id="nurseName" placeholder="Name">
-<input type="text" id="nurseDoctorId" placeholder="Doctor ID">
-<input type="text" id="nurseSalary" placeholder="Salary">
-<button onclick="addNurse()">Add Nurse</button>
+        <br><br><br>
+        <div class="service-container">
+          <div class="appointment-form">
+            <h3>Delete Patient</h3>
+            <input type="text" id="deletePatientId" placeholder="Patient ID" />
+            <button class="main-btn" onclick="deletePatient()">Delete Patient</button>
+          </div>
+        </div>
 
-<h2>Add Appointment</h2>
-<input type="text" id="appointmentId" placeholder="ID">
-<input type="text" id="appointmentDoctorId" placeholder="Doctor ID">
-<input type="text" id="appointmentPatientId" placeholder="Patient ID">
-<input type="text" id="appointmentDate" placeholder="Date">
-<button onclick="addAppointment()">Add Appointment</button>
+      </section>
+    </main>
+  
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>We look forward to exceeding your expectations.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <ul>
+                    <li>Email: info@example.com</li>
+                    <li>Phone: +1 (123) 456-7890</li>
+                    <li>Address: 123 Street Name, City</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook">F</a>
+                    <a href="#" aria-label="Twitter">T</a>
+                    <a href="#" aria-label="Instagram">I</a>
+                    <a href="#" aria-label="LinkedIn">L</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Clinic Team. All Rights Reserved.</p>
+        </div>
+    </footer>
 
-<h2>View All Appointments</h2>
-<button onclick="fetchAppointments()">Get All Appointments</button>
-<pre id="appointments"></pre>
 
-<h2>Get Patients with Fees Above</h2>
-<input type="number" id="minFees" placeholder="Minimum Fees">
-<button onclick="fetchPatientsWithFeesAbove()">Get Patients</button>
-<pre id="patientsWithFeesAbove"></pre>
+  </body>
 
-<h2>Get Doctor Count by Specialization</h2>
-<input type="number" id="minSpecializationCount" placeholder="Minimum Count">
-<button onclick="fetchDoctorCountBySpecialization()">Get Doctor Count</button>
-<pre id="doctorSpecializationCount"></pre>
-
-<h2>Get Appointments with Patient and Doctor</h2>
-<button onclick="fetchAppointmentsWithPatientAndDoctor()">Get Appointments</button>
-<pre id="appointmentsWithPatientAndDoctor"></pre>
-
-<h2>Get Doctors with Nurses</h2>
-<button onclick="fetchDoctorsWithNurses()">Get Doctors</button>
-<pre id="doctorsWithNurses"></pre>
-
-<h2>Get Patients by Doctor</h2>
-<input type="number" id="doctorId" placeholder="Doctor ID">
-<button onclick="fetchPatientsByDoctor()">Get Patients</button>
-<pre id="patientsByDoctor"></pre>
-
-<h2>Get Total Appointments</h2>
-<button onclick="fetchTotalAppointments()">Get Total</button>
-<pre id="totalAppointments"></pre>
-
-<h2>Get Total Fees by Doctor</h2>
-<button onclick="fetchTotalFeesByDoctor()">Get Fees</button>
-<pre id="totalFeesByDoctor"></pre>
-
-<h2>Get Average Worker Salary</h2>
-<button onclick="fetchAverageWorkerSalary()">Get Average Salary</button>
-<pre id="averageWorkerSalary"></pre>
-
-<h2>Get Doctors with Appointment Count</h2>
-<button onclick="fetchDoctorsWithAppointmentCount()">Get Doctors</button>
-<pre id="doctorsWithAppointmentCount"></pre>
-</body>
+  <script src="main.js"></script>
 </html>

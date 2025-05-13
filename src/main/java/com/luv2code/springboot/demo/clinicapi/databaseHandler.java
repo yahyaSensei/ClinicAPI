@@ -214,4 +214,21 @@ public class databaseHandler {
         resultJson.append("]");
         return resultJson.toString();
     }
+    public void DeletePatient(int id) throws SQLException {
+        String query = "CALL DeletePatient(?)";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            stmt.execute();
+        }
+    }
+
+    public void UpdatePatient(int id, String name, int fees) throws SQLException {
+        String query = "CALL UpdatePatient(?, ?, ?)";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            stmt.setString(2, name);
+            stmt.setInt(3, fees);
+            stmt.execute();
+        }
+    }
 }
